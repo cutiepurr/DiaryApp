@@ -8,11 +8,11 @@ const DiaryEntryCreateForm = () => {
 
     useEffect(() => {
         fetch(`api/Diary/count`)
-        .then(response => response.json())
-        .then(data =>{ 
-            console.log(data);
-            setCountEntry(data)
-        });
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                setCountEntry(data)
+            });
         document.getElementById('createdTimestamp').valueAsDate = new Date();
         setEditor(new Editor({
             el: document.getElementById('content-input'),
@@ -26,8 +26,8 @@ const DiaryEntryCreateForm = () => {
     const submitForm = (e) => {
         e.preventDefault();
         var entry = {
-            id: countEntry+1,
-            title : document.getElementById('title-input').value,
+            id: countEntry + 1,
+            title: document.getElementById('title-input').value,
             content: editor.getMarkdown()
         }
         fetch(`api/Diary`, {
@@ -50,7 +50,7 @@ const DiaryEntryCreateForm = () => {
         <Form onSubmit={submitForm}>
             <h1>Create new Entry</h1>
             <Label for='title-input'>Title</Label>
-            <Input id='title-input' name='title-input' placeholder='Title'/>
+            <Input id='title-input' name='title-input' placeholder='Title' />
             <Label for='createdTimestamp'>Created</Label>
             <Input id='createdTimestamp' name='createdTimestamp' type='date' />
             <Label for='content-input'>Content</Label>
@@ -63,7 +63,7 @@ const DiaryEntryCreateForm = () => {
 
     return (
         <>
-            { createForm }
+            {createForm}
         </>
     );
 }

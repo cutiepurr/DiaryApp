@@ -1,18 +1,28 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { timestampParser } from '../timestampParser';
-import { Button, Card, CardBody, CardTitle } from 'reactstrap'
+import { Button, Card, CardBody, CardTitle, Pagination, PaginationItem, PaginationLink } from 'reactstrap'
 
 const Diary = () => {
     const [diary, setDiary] = useState([]);
+    const [countPagination, setCountPagination] = useState(0);
+    const [startPagination, setStartPagination] = useState(0);
+    const countPerPagination = 1;
+
     useEffect(() => {
-        fetch(`api/Diary`)
-            .then(result => {
-                return result.json();
-            })
+        fetch(`api/Diary/count`)
+            .then(result => result.json())
             .then(data => {
-                setDiary(data)
-            })
+                setCountPagination(Math.ceil(data / countPerPagination));
+            });
     }, []);
+
+    useEffect(() => {
+        fetch(`api/Diary?start=${startPagination}&count=${countPerPagination}`)
+            .then(result => result.json())
+            .then(data => {
+                setDiary(data);
+            });
+    }, [startPagination]);
 
     const diaryIndex = diary.map(entry =>
         <Card key={entry.id} className='mt-3 entry-card'>
@@ -24,14 +34,25 @@ const Diary = () => {
         </Card>
     );
 
+    const paginationItems = Array.from({ length: countPagination }, (_, i) =>
+        <PaginationItem key={i}>
+            <PaginationLink onClick={() => setStartPagination(i)}>
+                {i + 1}
+            </PaginationLink>
+        </PaginationItem>
+    );
+
     return (
         <>
-            <Button type='button' color='primary' onClick={() => {window.location.href='/diary/new'}}>New</Button>
+            <Button type='button' color='primary' onClick={() => { window.location.href = '/diary/new' }}>New</Button>
             {
                 diary != null
                     ? diaryIndex
                     : <h3>Loading...</h3>
             }
+            <Pagination>
+                {paginationItems}
+            </Pagination>
         </>
     );
 }

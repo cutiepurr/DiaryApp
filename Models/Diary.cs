@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DiaryApp;
+﻿namespace DiaryApp;
 
 public partial class Diary
 {

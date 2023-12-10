@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DiaryApp;
 
 namespace DiaryApp.Controllers
 {
@@ -22,14 +16,16 @@ namespace DiaryApp.Controllers
 
         // GET: api/Diary
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Diary>>> GetDiaries()
+        public async Task<ActionResult<IEnumerable<Diary>>> GetDiaries(int start=0, int count=1)
         {
           if (_context.Diaries == null)
           {
               return NotFound();
           }
-            return await _context.Diaries
-                .OrderByDescending(diary => diary.Id)
+            var countEntry = GetDiariesCount().Result.Value;
+            var end = countEntry - start*count;
+            return await _context.Diaries.OrderByDescending(diary => diary.Id)
+                .Where(diary => diary.Id <=end && diary.Id>end-count)
                 .ToListAsync();
         }
 
@@ -53,13 +49,13 @@ namespace DiaryApp.Controllers
 
         // GET: api/Diary/count
         [HttpGet("count")]
-        public ActionResult<int> GetDiariesCount()
+        public async Task<ActionResult<int>> GetDiariesCount()
         {
             if (_context.Diaries == null)
             {
                 return NotFound();
             }
-            return _context.Diaries.Count();
+            return await _context.Diaries.CountAsync();
         }
 
         // PUT: api/Diary/5
