@@ -1,6 +1,6 @@
 import Diary from "./diaries/Diary";
-import DiaryEntryEditForm from "./diaries/DiaryEntryEditForm";
-import DiaryEntryView from "./diaries/DiaryEntryView";
+import { DiaryEntryEditForm } from "./diaries/DiaryEntryEditForm";
+import { DiaryEntryPage } from "./diaries/DiaryEntryView";
 
 const AppRoutes = [
   {
@@ -9,7 +9,7 @@ const AppRoutes = [
   },
   {
     path: '/diary/:id',
-    element: <DiaryEntryView />
+    element: <DiaryEntryPage />
   },
   {
     path: '/diary/:id/edit',

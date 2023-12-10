@@ -1,42 +1,48 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { timestampParser } from '../timestampParser';
-import { Button } from 'reactstrap';
 import { marked } from 'marked';
-import { createRoot } from 'react-dom';
 
-const DiaryEntryView = () => {
+const DiaryEntryPage = () => {
     const [entry, setEntry] = useState({});
     const { id } = useParams();
+    
     useEffect(() => {
         fetch(`api/Diary/${id}`)
             .then(result => {
                 return result.json();
             })
             .then(data => {
-                data.content = data.content!= null ? marked.parse(data.content) : "";
+                data.content = data.content != null ? marked.parse(data.content) : "";
                 setEntry(data);
-                document.getElementById('content').innerHTML = data.content;
             })
     }, []);
 
     const entryView =
         <div>
-            <h3>{entry.title} (#{id})</h3>
-            <div>{timestampParser(entry.createdTimestamp)}</div>
-            <a className='btn btn-primary' href={`diary/${id}/edit`}>Edit</a>
-            <div id='content'></div>
+            <div className='row'>
+                <div className='col col-sm-9'>
+                    <h3>{entry.title} (#{entry.id})</h3>
+                    <div>{timestampParser(entry.createdTimestamp)}</div>
+                </div>
+                <div className='col col-sm-3'>
+                    <a className='btn btn-primary float-end' href={`diary/${entry.id}/edit`}>Edit</a>
+                </div>
+            </div>
+            <hr />
+
+            <div dangerouslySetInnerHTML={{ __html: entry.content }}></div>
         </div>
 
     return (
         <div>
-            {
-                entry != null
-                    ? entryView
-                    : <h3>Loading...</h3>
-            }
+            {entry != null
+                ? entryView
+                : <h3>Loading...</h3>}
         </div>
     );
 }
 
-export default DiaryEntryView;
+export {
+    DiaryEntryPage,
+};
