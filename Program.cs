@@ -1,7 +1,17 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.EntityFrameworkCore;
+
+var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+builder.Services.AddDbContextPool<DiaryApp.DiaryDbContext>(
+    options =>
+    {
+        options.UseMySql(
+            builder.Configuration.GetConnectionString("DefaultConnectionString"),
+            ServerVersion.Parse("8.2.0-mysql")
+        );
+    }
+);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
