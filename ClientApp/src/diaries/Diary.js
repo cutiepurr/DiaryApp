@@ -25,14 +25,14 @@ const Diary = () => {
     );
 
     return (
-        <div>
-            <Button type='button' onClick={() => {window.location.href='/diary/new'}}>New</Button>
+        <>
+            <Button type='button' color='primary' onClick={() => {window.location.href='/diary/new'}}>New</Button>
             {
                 diary != null
                     ? diaryIndex
                     : <h3>Loading...</h3>
             }
-        </div>
+        </>
     );
 }
 

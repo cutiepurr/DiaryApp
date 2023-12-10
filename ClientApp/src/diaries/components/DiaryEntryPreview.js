@@ -2,7 +2,7 @@ import React from 'react';
 import { marked } from 'marked';
 import { timestampParser } from '../../timestampParser';
 
-const DiaryPreview = ({entry}) => {
+const DiaryEntryPreview = ({entry}) => {
     const preview =
         <div>
             <div>
@@ -17,16 +17,16 @@ const DiaryPreview = ({entry}) => {
         </div>
 
     return (
-        <div>
+        <>
             {
                 entry != null
                     ? preview
                     : <h3>Loading...</h3>
             }
-        </div>
+        </>
     );
 }
 
 export {
-    DiaryPreview
+    DiaryEntryPreview
 };

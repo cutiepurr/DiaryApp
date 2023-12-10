@@ -17,3 +17,7 @@ code {
   border-color: #1861ac;
 }
 
+#content-input {
+  min-height: 30cap;
+}
+

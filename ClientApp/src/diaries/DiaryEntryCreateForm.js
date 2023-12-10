@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Button, Form, Input, Label } from 'reactstrap';
-import { marked } from 'marked';
-import { DiaryPreview } from './components/DiaryPreview';
+import { DiaryEntryPreview } from './components/DiaryEntryPreview';
 
 const DiaryEntryCreateForm = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [previewContent, setPreviewContent] = useState("");
 
     const redirectToView = () => window.location.href = `/`
 
@@ -37,36 +35,36 @@ const DiaryEntryCreateForm = () => {
     };
 
     const handleContentChange = () => {
-        let contentElement = document.getElementById('content-input');
-        if (contentElement == null || contentElement.value == null) return;
-        setContent(contentElement.value);
-        setPreviewContent(marked.parse(contentElement.value));
+        setContent(document.getElementById('content-input').value);
     };
 
-    const entryView =
+    const createForm =
         <Form onSubmit={submitForm}>
+            <h1>Create new Entry</h1>
             <Label for='title-input'>Title</Label>
             <Input id='title-input' name='title-input' placeholder='Title' onChange={handleTitleChange} />
+            <Label for='createdTimestamp'>Created</Label>
+            <Input id='createdTimestamp' name='createdTimestamp' type='date' />
             <Label for='content-input'>Content</Label>
             <Input id='content-input' name='content-input' placeholder='Content'
                 type='textarea' height='300' onChange={handleContentChange} />
             <div>
-                <Button className='m-2' type='submit'>Submit</Button>
-                <Button className='m-2' type='button' onClick={redirectToView}>Cancel</Button>
+                <Button className='m-2 float-end' type='button' color='danger' onClick={redirectToView}>Cancel</Button>
+                <Button className='m-2 float-end' type='submit' color='primary'>Submit</Button>
             </div>
         </Form>
 
     return (
-        <div>
-            { entryView }
+        <>
+            { createForm }
             <div className='mt-5'>
                 <h5>Preview</h5><hr />
-                <DiaryPreview entry={{
+                <DiaryEntryPreview entry={{
                     title: title,
                     content: content
                 }} />
             </div>
-        </div>
+        </>
     );
 }
 

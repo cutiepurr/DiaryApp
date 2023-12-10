@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { timestampParser } from '../timestampParser';
 import { Button, Form, Input, Label } from 'reactstrap';
-import { marked } from 'marked';
-import { DiaryPreview } from './components/DiaryPreview';
+import { DiaryEntryPreview } from './components/DiaryEntryPreview';
 
 const DiaryEntryEditForm = () => {
     const [entry, setEntry] = useState({});
@@ -56,9 +54,9 @@ const DiaryEntryEditForm = () => {
         setContent(document.getElementById('content-input').value)
     };
 
-    const entryView =
+    const editForm =
         <Form onSubmit={submitForm}>
-            <h3>(#{id})</h3>
+            <h1>Edit Entry (#{id})</h1>
             <Label for='title-input'>Title</Label>
             <Input id='title-input' name='title-input' placeholder='Title' onChange={handleTitleChange} />
             <Label for='createdTimestamp'>Created</Label>
@@ -67,28 +65,28 @@ const DiaryEntryEditForm = () => {
             <Input id='content-input' name='content-input' placeholder='Content'
                 type='textarea' height='300' onChange={handleContentChange} />
             <div>
-                <Button className='m-2' type='submit'>Submit</Button>
-                <Button className='m-2' type='button' onClick={redirectToView}>Cancel</Button>
+                <Button className='m-2 float-end' type='button' color='danger' onClick={redirectToView}>Cancel</Button>
+                <Button className='m-2 float-end' type='submit' color='primary'>Submit</Button>
             </div>
         </Form>
 
     return (
-        <div>
+        <>
             {
                 entry != null
-                    ? entryView
+                    ? editForm
                     : <h3>Loading...</h3>
             }
             <div className='mt-5'>
                 <h5>Preview</h5><hr />
-                <DiaryPreview entry={{
+                <DiaryEntryPreview entry={{
                     id: id,
                     title: title,
                     content: content,
                     createdTimestamp: entry.createdTimestamp
                 }} />
             </div>
-        </div>
+        </>
     );
 }
 
