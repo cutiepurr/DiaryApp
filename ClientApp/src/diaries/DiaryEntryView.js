@@ -35,7 +35,7 @@ const DiaryEntryPage = () => {
     return (
         <>
             <div>
-                <a className='btn btn-primary float-end m-2' href={`diary/${entry.id}/edit`}>Edit</a>
+                <a className='btn btn-primary float-end m-2' href={`diary/${entry.id}/edit`}><i className="fa-solid fa-pen"></i> Edit</a>
             </div>
             <div>
                 <h1>{entry.title} {entry.id != null && <span>(#{entry.id})</span>}</h1>
@@ -44,8 +44,12 @@ const DiaryEntryPage = () => {
             <hr />
             <div id='content'></div>
             <div>
-                <a className='btn btn-primary float-end m-2' href={`diary/${entry.id}/edit`}>Edit</a>
-                <Button className='float-end m-2' color='danger' onClick={deleteEntry}>Delete</Button>
+                <a className='btn btn-primary float-end m-2' href={`diary/${entry.id}/edit`}>
+                    <i className="fa-solid fa-pen"></i>
+                </a>
+                <Button className='float-end m-2' color='danger' onClick={deleteEntry} >
+                        <i className="fa-solid fa-trash"></i>
+                </Button>
             </div>
             
         </>

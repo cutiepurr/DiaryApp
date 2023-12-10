@@ -6,7 +6,7 @@ const Diary = () => {
     const [diary, setDiary] = useState([]);
     const [countPagination, setCountPagination] = useState(0);
     const [startPagination, setStartPagination] = useState(0);
-    const countPerPagination = 1;
+    const countPerPagination = 10;
 
     useEffect(() => {
         fetch(`api/Diary/count`)
@@ -35,7 +35,7 @@ const Diary = () => {
     );
 
     const paginationItems = Array.from({ length: countPagination }, (_, i) =>
-        <PaginationItem key={i}>
+        <PaginationItem key={i} active={startPagination==i}>
             <PaginationLink onClick={() => setStartPagination(i)}>
                 {i + 1}
             </PaginationLink>
@@ -44,14 +44,30 @@ const Diary = () => {
 
     return (
         <>
-            <Button type='button' color='primary' onClick={() => { window.location.href = '/diary/new' }}>New</Button>
+            <div>
+                <Button type='button' color='primary' className='float-end'
+                    onClick={() => { window.location.href = '/diary/new' }}><i class="fa-solid fa-plus"></i></Button>
+                <h1>All Entries</h1>
+            </div>
             {
                 diary != null
                     ? diaryIndex
                     : <h3>Loading...</h3>
             }
-            <Pagination>
+            <Pagination className='mt-3'>
+                <PaginationItem>
+                    <PaginationLink first onClick={() => setStartPagination(0)}/>
+                </PaginationItem>
+                <PaginationItem disabled={startPagination==0}>
+                    <PaginationLink previous onClick={() => setStartPagination(startPagination => startPagination-1)}/>
+                </PaginationItem>
                 {paginationItems}
+                <PaginationItem disabled={startPagination==countPagination-1}>
+                    <PaginationLink next onClick={() => setStartPagination(startPagination => startPagination+1)}/>
+                </PaginationItem>
+                <PaginationItem>
+                    <PaginationLink last onClick={() => setStartPagination(countPagination-1)}/>
+                </PaginationItem>
             </Pagination>
         </>
     );
