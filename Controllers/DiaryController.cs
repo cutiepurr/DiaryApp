@@ -51,6 +51,17 @@ namespace DiaryApp.Controllers
             return diary;
         }
 
+        // GET: api/Diary/count
+        [HttpGet("count")]
+        public ActionResult<int> GetDiariesCount()
+        {
+            if (_context.Diaries == null)
+            {
+                return NotFound();
+            }
+            return _context.Diaries.Count();
+        }
+
         // PUT: api/Diary/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]

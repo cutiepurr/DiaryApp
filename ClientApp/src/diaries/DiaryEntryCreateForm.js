@@ -3,9 +3,16 @@ import { Button, Form, Input, Label } from 'reactstrap';
 import { Editor } from '@toast-ui/editor';
 
 const DiaryEntryCreateForm = () => {
+    const [countEntry, setCountEntry] = useState(0);
     const [editor, setEditor] = useState(null);
 
     useEffect(() => {
+        fetch(`api/Diary/count`)
+        .then(response => response.json())
+        .then(data =>{ 
+            console.log(data);
+            setCountEntry(data)
+        });
         document.getElementById('createdTimestamp').valueAsDate = new Date();
         setEditor(new Editor({
             el: document.getElementById('content-input'),
@@ -19,6 +26,7 @@ const DiaryEntryCreateForm = () => {
     const submitForm = (e) => {
         e.preventDefault();
         var entry = {
+            id: countEntry+1,
             title : document.getElementById('title-input').value,
             content: editor.getMarkdown()
         }
