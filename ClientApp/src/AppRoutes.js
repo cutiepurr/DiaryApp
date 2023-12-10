@@ -2,6 +2,7 @@ import { Counter } from "./components/Counter";
 import { FetchData } from "./components/FetchData";
 import { Home } from "./components/Home";
 import Diary from "./diaries/Diary";
+import DiaryEntryEditForm from "./diaries/DiaryEntryEditForm";
 import DiaryEntryView from "./diaries/DiaryEntryView";
 
 const AppRoutes = [
@@ -24,6 +25,10 @@ const AppRoutes = [
   {
     path: '/diary/:id',
     element: <DiaryEntryView />
+  },
+  {
+    path: '/diary/:id/edit',
+    element: <DiaryEntryEditForm />
   }
 ];
 

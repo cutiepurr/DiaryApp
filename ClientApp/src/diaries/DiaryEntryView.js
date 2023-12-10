@@ -17,7 +17,7 @@ const DiaryEntryView = () => {
 
     const entryView =
         <div>
-            <h4>{entry.title} (#{entry.id})</h4>
+            <h3>{entry.title} (#{entry.id})</h3>
             <div>{timestampParser(entry.createdTimestamp)}</div>
             <div>{entry.content}</div>
         </div>
