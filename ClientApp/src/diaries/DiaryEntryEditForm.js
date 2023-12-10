@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { timestampParser } from '../timestampParser';
 import { Button, Form, Input, Label } from 'reactstrap';
+import { marked } from 'marked';
 
 const DiaryEntryEditForm = () => {
     const [entry, setDiary] = useState({});
@@ -16,6 +17,7 @@ const DiaryEntryEditForm = () => {
                 document.getElementById('title').value = data.title;
                 document.getElementById('createdTimestamp').value = toCADateFormat(data.createdTimestamp);
                 document.getElementById('content').value = data.content;
+                handleContentChange();
             })
     }, []);
 
@@ -26,7 +28,7 @@ const DiaryEntryEditForm = () => {
     const submitForm = (e) => {
         e.preventDefault();
         entry.title = document.getElementById('title').value;
-        entry.content = document.getElementById('content').value
+        entry.content = document.getElementById('content').value;
         fetch(`api/Diary/${id}`, {
             method: 'PUT',
             headers: {
@@ -43,6 +45,12 @@ const DiaryEntryEditForm = () => {
             })
     };
 
+    const handleContentChange = () => {
+        document.getElementById('content-preview').innerHTML = marked.parse(
+            document.getElementById('content').value
+        );
+    }
+    
     const entryView =
         <Form onSubmit={submitForm}>
             <h3>(#{id})</h3>
@@ -52,7 +60,11 @@ const DiaryEntryEditForm = () => {
             <Input id='createdTimestamp' name='createdTimestamp' type='date' disabled />
             <Label for='content'>Content</Label>
             <Input id='content' name='content' placeholder='Content' 
-            type='textarea' height='300' />
+            type='textarea' height='300' onChange={handleContentChange} />
+            <div>
+                <h5>Preview</h5>
+                <div id='content-preview'></div>
+            </div>
             <Button type='submit'>Submit</Button>
         </Form>
 
