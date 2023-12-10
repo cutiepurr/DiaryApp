@@ -3,11 +3,12 @@ import { useParams } from 'react-router-dom';
 import { timestampParser } from '../timestampParser';
 import { Button, Form, Input, Label } from 'reactstrap';
 import { marked } from 'marked';
+import { DiaryPreview } from './components/DiaryPreview';
 
 const DiaryEntryEditForm = () => {
     const [entry, setEntry] = useState({});
-    const [previewTitle, setPreviewTitle] = useState("");
-    const [previewContent, setPreviewContent] = useState("");
+    const [title, setTitle] = useState("");
+    const [content, setContent] = useState("");
     const { id } = useParams();
     
     useEffect(() => {
@@ -48,13 +49,11 @@ const DiaryEntryEditForm = () => {
     };
 
     const handleTitleChange = () => {
-        setPreviewTitle(document.getElementById('title-input').value);
+        setTitle(document.getElementById('title-input').value);
     };
 
     const handleContentChange = () => {
-        let content = document.getElementById('content-input');
-        if (content == null || content.value == null) return;
-        setPreviewContent(marked.parse(content.value));
+        setContent(document.getElementById('content-input').value)
     };
 
     const entryView =
@@ -73,19 +72,6 @@ const DiaryEntryEditForm = () => {
             </div>
         </Form>
 
-    const preview =
-        <div>
-            <div className='row'>
-                <div className='col col-sm-9'>
-                    <h3>{previewTitle} (#{entry.id})</h3>
-                    <div>{timestampParser(entry.createdTimestamp)}</div>
-                </div>
-            </div>
-            <hr />
-
-            <div dangerouslySetInnerHTML={{ __html: previewContent }}></div>
-        </div>
-
     return (
         <div>
             {
@@ -95,11 +81,12 @@ const DiaryEntryEditForm = () => {
             }
             <div className='mt-5'>
                 <h5>Preview</h5><hr />
-                {
-                    entry != null
-                        ? preview
-                        : <h3>Loading...</h3>
-                }
+                <DiaryPreview entry={{
+                    id: id,
+                    title: title,
+                    content: content,
+                    createdTimestamp: entry.createdTimestamp
+                }} />
             </div>
         </div>
     );

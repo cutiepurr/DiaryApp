@@ -28,7 +28,9 @@ namespace DiaryApp.Controllers
           {
               return NotFound();
           }
-            return await _context.Diaries.ToListAsync();
+            return await _context.Diaries
+                .OrderByDescending(diary => diary.Id)
+                .ToListAsync();
         }
 
         // GET: api/Diary/5

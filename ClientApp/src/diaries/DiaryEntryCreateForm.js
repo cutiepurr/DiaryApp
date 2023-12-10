@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Form, Input, Label } from 'reactstrap';
 import { marked } from 'marked';
+import { DiaryPreview } from './components/DiaryPreview';
 
 const DiaryEntryCreateForm = () => {
     const [title, setTitle] = useState("");
@@ -55,24 +56,15 @@ const DiaryEntryCreateForm = () => {
             </div>
         </Form>
 
-    const preview =
-        <div>
-            <div className='row'>
-                <div className='col col-sm-9'>
-                    <h3>{title}</h3>
-                </div>
-            </div>
-            <hr />
-
-            <div dangerouslySetInnerHTML={{ __html: previewContent }}></div>
-        </div>
-
     return (
         <div>
             { entryView }
             <div className='mt-5'>
                 <h5>Preview</h5><hr />
-                { preview }
+                <DiaryPreview entry={{
+                    title: title,
+                    content: content
+                }} />
             </div>
         </div>
     );
