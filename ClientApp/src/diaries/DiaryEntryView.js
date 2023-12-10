@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { timestampParser } from '../timestampParser';
+import { Button } from 'reactstrap';
 
 const DiaryEntryView = () => {
     const [entry, setDiary] = useState({});
@@ -17,8 +18,9 @@ const DiaryEntryView = () => {
 
     const entryView =
         <div>
-            <h3>{entry.title} (#{entry.id})</h3>
+            <h3>{entry.title} (#{id})</h3>
             <div>{timestampParser(entry.createdTimestamp)}</div>
+            <a className='btn btn-primary' href={`diary/${id}/edit`}>Edit</a>
             <div>{entry.content}</div>
         </div>
 

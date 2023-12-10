@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { timestampParser } from '../timestampParser';
+import { Card, CardBody, CardTitle } from 'reactstrap'
 
 const Diary = () => {
     const [diary, setDiary] = useState([]);
@@ -14,10 +15,13 @@ const Diary = () => {
     }, []);
 
     const diaryIndex = diary.map(entry =>
-        <div class='row'>
-            <h4 class='col col-6'>{entry.title} (#{entry.id})</h4>
-            <div class='col col-6 text-end'>{timestampParser(entry.createdTimestamp)}</div>
-        </div>
+        <Card key={entry.id}>
+            <CardBody className='row'>
+                <CardTitle tag='h5' className='col col-sm-9'>{entry.title} (#{entry.id})</CardTitle>
+                <div className='col col-sm-3 text-end'>{timestampParser(entry.createdTimestamp)}</div>
+                <a className='stretched-link' href={`diary/${entry.id}`}></a>
+            </CardBody>
+        </Card>
     );
 
     return (
