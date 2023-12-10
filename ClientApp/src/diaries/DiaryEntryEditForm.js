@@ -16,7 +16,7 @@ const DiaryEntryEditForm = () => {
             .then(data => {
                 setEntry(data);
                 document.getElementById('title-input').value = data.title;
-                document.getElementById('createdTimestamp').value = new Date(data.createdTimestamp).toLocaleDateString('en-CA');
+                document.getElementById('createdTimestamp').valueAsDate = new Date(data.createdTimestamp);
                 setEditor(new Editor({
                     el: document.getElementById('content-input'),
                     initialEditType: 'markdown',

@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { marked } from 'marked';
-import { DiaryEntryPreview } from './components/DiaryEntryPreview';
 import { Button } from 'reactstrap';
 import { Editor } from '@toast-ui/editor';
 import { timestampParser } from '../timestampParser';

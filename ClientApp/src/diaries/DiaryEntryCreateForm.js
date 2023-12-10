@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Input, Label } from 'reactstrap';
-import { DiaryEntryPreview } from './components/DiaryEntryPreview';
 import { Editor } from '@toast-ui/editor';
 
 const DiaryEntryCreateForm = () => {
     const [editor, setEditor] = useState(null);
 
     useEffect(() => {
+        document.getElementById('createdTimestamp').valueAsDate = new Date();
         setEditor(new Editor({
             el: document.getElementById('content-input'),
             initialEditType: 'markdown',
