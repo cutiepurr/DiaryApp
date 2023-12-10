@@ -15,7 +15,7 @@ const Diary = () => {
     }, []);
 
     const diaryIndex = diary.map(entry =>
-        <Card key={entry.id} className='mt-3'>
+        <Card key={entry.id} className='mt-3 entry-card'>
             <CardBody className='row'>
                 <CardTitle tag='h5' className='col col-sm-9'>{entry.title} (#{entry.id})</CardTitle>
                 <div className='col col-sm-3 text-end'>{timestampParser(entry.createdTimestamp)}</div>

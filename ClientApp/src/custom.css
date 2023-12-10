@@ -1,10 +1,10 @@
 ﻿/* Provide sufficient contrast against white background */
 a {
-  color: #0366d6;
+  color: Teal;
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem darkslategray;
 }
 
 code {
@@ -13,11 +13,19 @@ code {
 
 .btn-primary {
   color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+  background-color: Teal;
+  border-color: darkslategray;
+}
+.btn-primary:hover {
+  background-color: darkslategray;
 }
 
 #content-input {
   min-height: 30cap;
+}
+
+.entry-card:hover {
+  cursor: pointer;
+  background-color: ghostwhite;
 }
 
