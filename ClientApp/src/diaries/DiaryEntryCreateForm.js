@@ -1,18 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form, Input, Label } from 'reactstrap';
 import { DiaryEntryPreview } from './components/DiaryEntryPreview';
+import { Editor } from '@toast-ui/editor';
 
 const DiaryEntryCreateForm = () => {
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+    const [editor, setEditor] = useState(null);
+
+    useEffect(() => {
+        setEditor(new Editor({
+            el: document.getElementById('content-input'),
+            initialEditType: 'markdown',
+            previewStyle: 'vertical'
+        }));
+    }, []);
 
     const redirectToView = () => window.location.href = `/`
 
     const submitForm = (e) => {
         e.preventDefault();
         var entry = {
-            title : title,
-            content: content
+            title : document.getElementById('title-input').value,
+            content: editor.getMarkdown()
         }
         fetch(`api/Diary`, {
             method: 'POST',
@@ -30,24 +38,15 @@ const DiaryEntryCreateForm = () => {
             })
     };
 
-    const handleTitleChange = () => {
-        setTitle(document.getElementById('title-input').value);
-    };
-
-    const handleContentChange = () => {
-        setContent(document.getElementById('content-input').value);
-    };
-
     const createForm =
         <Form onSubmit={submitForm}>
             <h1>Create new Entry</h1>
             <Label for='title-input'>Title</Label>
-            <Input id='title-input' name='title-input' placeholder='Title' onChange={handleTitleChange} />
+            <Input id='title-input' name='title-input' placeholder='Title'/>
             <Label for='createdTimestamp'>Created</Label>
             <Input id='createdTimestamp' name='createdTimestamp' type='date' />
             <Label for='content-input'>Content</Label>
-            <Input id='content-input' name='content-input' placeholder='Content'
-                type='textarea' height='300' onChange={handleContentChange} />
+            <div id='content-input'></div>
             <div>
                 <Button className='m-2 float-end' type='button' color='danger' onClick={redirectToView}>Cancel</Button>
                 <Button className='m-2 float-end' type='submit' color='primary'>Submit</Button>
@@ -57,13 +56,6 @@ const DiaryEntryCreateForm = () => {
     return (
         <>
             { createForm }
-            <div className='mt-5'>
-                <h5>Preview</h5><hr />
-                <DiaryEntryPreview entry={{
-                    title: title,
-                    content: content
-                }} />
-            </div>
         </>
     );
 }

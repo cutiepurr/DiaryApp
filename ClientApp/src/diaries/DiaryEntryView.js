@@ -3,19 +3,26 @@ import { useParams } from 'react-router-dom';
 import { marked } from 'marked';
 import { DiaryEntryPreview } from './components/DiaryEntryPreview';
 import { Button } from 'reactstrap';
+import { Editor } from '@toast-ui/editor';
+import { timestampParser } from '../timestampParser';
 
 const DiaryEntryPage = () => {
     const [entry, setEntry] = useState({});
     const { id } = useParams();
-    
+    const [editor, setEditor] = useState(null);
+
     useEffect(() => {
         fetch(`api/Diary/${id}`)
             .then(result => {
                 return result.json();
             })
             .then(data => {
-                data.content = data.content != null ? marked.parse(data.content) : "";
                 setEntry(data);
+                setEditor(Editor.factory({
+                    el: document.getElementById('content'),
+                    viewer: true,
+                    initialValue: data.content,
+                }));
             })
     }, []);
 
@@ -32,7 +39,12 @@ const DiaryEntryPage = () => {
             <div>
                 <a className='btn btn-primary float-end m-2' href={`diary/${entry.id}/edit`}>Edit</a>
             </div>
-            <DiaryEntryPreview entry={entry} />
+            <div>
+                <h1>{entry.title} {entry.id != null && <span>(#{entry.id})</span>}</h1>
+                <div>{entry.createdTimestamp != null && timestampParser(entry.createdTimestamp)}</div>
+            </div>
+            <hr />
+            <div id='content'></div>
             <div>
                 <a className='btn btn-primary float-end m-2' href={`diary/${entry.id}/edit`}>Edit</a>
                 <Button className='float-end m-2' color='danger' onClick={deleteEntry}>Delete</Button>

@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Form, Input, Label } from 'reactstrap';
-import { DiaryEntryPreview } from './components/DiaryEntryPreview';
+import { Editor } from '@toast-ui/editor';
 
 const DiaryEntryEditForm = () => {
     const [entry, setEntry] = useState({});
-    const [title, setTitle] = useState("");
-    const [content, setContent] = useState("");
+    const [editor, setEditor] = useState(null);
     const { id } = useParams();
     
     useEffect(() => {
@@ -18,9 +17,12 @@ const DiaryEntryEditForm = () => {
                 setEntry(data);
                 document.getElementById('title-input').value = data.title;
                 document.getElementById('createdTimestamp').value = new Date(data.createdTimestamp).toLocaleDateString('en-CA');
-                document.getElementById('content-input').value = data.content;
-                handleTitleChange();
-                handleContentChange();
+                setEditor(new Editor({
+                    el: document.getElementById('content-input'),
+                    initialEditType: 'markdown',
+                    previewStyle: 'vertical',
+                    initialValue: data.content
+                }));
             })
     }, []);
 
@@ -29,7 +31,7 @@ const DiaryEntryEditForm = () => {
     const submitForm = (e) => {
         e.preventDefault();
         entry.title = document.getElementById('title-input').value;
-        entry.content = document.getElementById('content-input').value;
+        entry.content = editor.getMarkdown();
         fetch(`api/Diary/${id}`, {
             method: 'PUT',
             headers: {
@@ -46,24 +48,15 @@ const DiaryEntryEditForm = () => {
             })
     };
 
-    const handleTitleChange = () => {
-        setTitle(document.getElementById('title-input').value);
-    };
-
-    const handleContentChange = () => {
-        setContent(document.getElementById('content-input').value)
-    };
-
     const editForm =
         <Form onSubmit={submitForm}>
             <h1>Edit Entry (#{id})</h1>
             <Label for='title-input'>Title</Label>
-            <Input id='title-input' name='title-input' placeholder='Title' onChange={handleTitleChange} />
+            <Input id='title-input' name='title-input' placeholder='Title' />
             <Label for='createdTimestamp'>Created</Label>
             <Input id='createdTimestamp' name='createdTimestamp' type='date' disabled />
             <Label for='content-input'>Content</Label>
-            <Input id='content-input' name='content-input' placeholder='Content'
-                type='textarea' height='300' onChange={handleContentChange} />
+            <div id='content-input'></div>
             <div>
                 <Button className='m-2 float-end' type='button' color='danger' onClick={redirectToView}>Cancel</Button>
                 <Button className='m-2 float-end' type='submit' color='primary'>Submit</Button>
@@ -77,15 +70,6 @@ const DiaryEntryEditForm = () => {
                     ? editForm
                     : <h3>Loading...</h3>
             }
-            <div className='mt-5'>
-                <h5>Preview</h5><hr />
-                <DiaryEntryPreview entry={{
-                    id: id,
-                    title: title,
-                    content: content,
-                    createdTimestamp: entry.createdTimestamp
-                }} />
-            </div>
         </>
     );
 }
