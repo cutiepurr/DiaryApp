@@ -46,7 +46,7 @@ const Diary = () => {
         <>
             <div>
                 <Button type='button' color='primary' className='float-end'
-                    onClick={() => { window.location.href = '/diary/new' }}><i class="fa-solid fa-plus"></i></Button>
+                    onClick={() => { window.location.href = '/diary/new' }}><i className="fa-solid fa-plus"></i></Button>
                 <h1>All Entries</h1>
             </div>
             {

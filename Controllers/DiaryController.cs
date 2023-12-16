@@ -16,16 +16,16 @@ namespace DiaryApp.Controllers
 
         // GET: api/Diary
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Diary>>> GetDiaries(int start=0, int count=1)
+        public async Task<ActionResult<IEnumerable<Diary>>> GetDiaries(int start = 0, int count = 1)
         {
-          if (_context.Diaries == null)
-          {
-              return NotFound();
-          }
+            if (_context.Diaries == null)
+            {
+                return NotFound();
+            }
             var countEntry = GetDiariesCount().Result.Value;
-            var end = countEntry - start*count;
+            var end = countEntry - start * count;
             return await _context.Diaries.OrderByDescending(diary => diary.Id)
-                .Where(diary => diary.Id <=end && diary.Id>end-count)
+                .Where(diary => diary.Id <= end && diary.Id > end - count)
                 .ToListAsync();
         }
 
@@ -33,10 +33,10 @@ namespace DiaryApp.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Diary>> GetDiary(uint id)
         {
-          if (_context.Diaries == null)
-          {
-              return NotFound();
-          }
+            if (_context.Diaries == null)
+            {
+                return NotFound();
+            }
             var diary = await _context.Diaries.FindAsync(id);
 
             if (diary == null)
@@ -57,6 +57,7 @@ namespace DiaryApp.Controllers
             }
             return await _context.Diaries.CountAsync();
         }
+
 
         // PUT: api/Diary/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
