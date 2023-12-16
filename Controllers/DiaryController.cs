@@ -95,10 +95,10 @@ namespace DiaryApp.Controllers
         [HttpPost]
         public async Task<ActionResult<Diary>> PostDiary(Diary diary)
         {
-          if (_context.Diaries == null)
-          {
-              return Problem("Entity set 'DiaryDbContext.Diaries'  is null.");
-          }
+            if (_context.Diaries == null)
+            {
+                return Problem("Entity set 'DiaryDbContext.Diaries'  is null.");
+            }
             _context.Diaries.Add(diary);
             await _context.SaveChangesAsync();
 
