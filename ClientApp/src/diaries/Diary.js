@@ -47,6 +47,7 @@ const Diary = () => {
       .then((result) => result.json())
       .then((data) => {
         setDiary(data);
+        console.log(data);
       });
   }, [startPagination, token, isAuthenticated]);
 

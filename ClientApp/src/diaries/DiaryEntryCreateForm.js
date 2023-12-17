@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Input, Label } from 'reactstrap';
 import { Editor } from '@toast-ui/editor';
+import { useAuth0 } from '@auth0/auth0-react';
 
 const DiaryEntryCreateForm = () => {
+    const { user } = useAuth0();
     const [countEntry, setCountEntry] = useState(0);
     const [editor, setEditor] = useState(null);
 
@@ -28,7 +30,8 @@ const DiaryEntryCreateForm = () => {
         var entry = {
             id: countEntry + 1,
             title: document.getElementById('title-input').value,
-            content: editor.getMarkdown()
+            content: editor.getMarkdown(),
+            userEmail: user.email
         }
         fetch(`api/Diary`, {
             method: 'POST',
