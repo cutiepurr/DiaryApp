@@ -24,7 +24,8 @@ const Diary = () => {
   }, [getAccessTokenSilently]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (token==="") return;
+
     fetch(`api/Diary/count`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -34,10 +35,11 @@ const Diary = () => {
       .then((data) => {
         setCountPagination(Math.ceil(data / countPerPagination));
       });
-  }, [token, isAuthenticated]);
+  }, [token]);
 
   useEffect(() => {
-    if (!isAuthenticated) return;
+    if (token==="") return;
+
     fetch(`api/Diary?start=${startPagination}&count=${countPerPagination}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -47,7 +49,7 @@ const Diary = () => {
       .then((data) => {
         setDiary(data);
       });
-  }, [startPagination, token, isAuthenticated]);
+  }, [startPagination, token]);
 
   const diaryIndex = diary.map((entry) => (
     <Card key={entry.id} className="mt-3 entry-card">
@@ -64,7 +66,7 @@ const Diary = () => {
   ));
 
   const paginationItems = Array.from({ length: countPagination }, (_, i) => (
-    <PaginationItem key={i} active={startPagination == i}>
+    <PaginationItem key={i} active={startPagination === i}>
       <PaginationLink onClick={() => setStartPagination(i)}>
         {i + 1}
       </PaginationLink>
@@ -76,7 +78,7 @@ const Diary = () => {
       <PaginationItem>
         <PaginationLink first onClick={() => setStartPagination(0)} />
       </PaginationItem>
-      <PaginationItem disabled={startPagination == 0}>
+      <PaginationItem disabled={startPagination === 0}>
         <PaginationLink
           previous
           onClick={() =>
@@ -85,7 +87,7 @@ const Diary = () => {
         />
       </PaginationItem>
       {paginationItems}
-      <PaginationItem disabled={startPagination == countPagination - 1}>
+      <PaginationItem disabled={startPagination === countPagination - 1}>
         <PaginationLink
           next
           onClick={() =>

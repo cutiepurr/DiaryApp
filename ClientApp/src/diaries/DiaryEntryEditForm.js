@@ -16,6 +16,8 @@ const DiaryEntryEditForm = () => {
   }, [getAccessTokenSilently]);
 
   useEffect(() => {
+    if (token==="") return;
+
     fetch(`api/Diary/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -35,7 +37,7 @@ const DiaryEntryEditForm = () => {
             el: document.getElementById("content-input"),
             initialEditType: "markdown",
             previewStyle: "vertical",
-            initialValue: data.content,
+            initialValue: data.content ?? "",
           })
         );
       });
@@ -45,6 +47,8 @@ const DiaryEntryEditForm = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
+    if (token==="") return;
+
     entry.title = document.getElementById("title-input").value;
     entry.content = editor.getMarkdown();
     fetch(`api/Diary/${id}`, {

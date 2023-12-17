@@ -17,6 +17,8 @@ const DiaryEntryPage = () => {
   }, [getAccessTokenSilently]);
 
   useEffect(() => {
+    if (token==="") return;
+
     fetch(`api/Diary/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -38,6 +40,8 @@ const DiaryEntryPage = () => {
   }, [token]);
 
   const deleteEntry = () => {
+    if (token==="") return;
+
     fetch(`api/Diary/${id}`, {
       method: "DELETE",
       Authorization: `Bearer ${token}`,

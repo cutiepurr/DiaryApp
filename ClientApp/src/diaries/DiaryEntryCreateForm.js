@@ -14,6 +14,8 @@ const DiaryEntryCreateForm = () => {
   }, [getAccessTokenSilently]);
 
   useEffect(() => {
+    if (token==="") return;
+
     fetch(`api/Diary/count`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -41,6 +43,8 @@ const DiaryEntryCreateForm = () => {
 
   const submitForm = (e) => {
     e.preventDefault();
+    if (token==="") return;
+
     var entry = {
       id: countEntry + 1,
       title: document.getElementById("title-input").value,
