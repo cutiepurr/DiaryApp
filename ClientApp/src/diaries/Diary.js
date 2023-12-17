@@ -10,7 +10,6 @@ import {
   PaginationLink,
 } from "reactstrap";
 import { useAuth0 } from "@auth0/auth0-react";
-import Profile from "../authentication/Profile";
 
 const Diary = () => {
   const { getAccessTokenSilently, isAuthenticated } = useAuth0();
@@ -21,7 +20,7 @@ const Diary = () => {
   const countPerPagination = 10;
 
   useEffect(() => {
-    getAccessTokenSilently().then(res => setToken(res))
+    getAccessTokenSilently().then((res) => setToken(res));
   }, [getAccessTokenSilently]);
 
   useEffect(() => {
@@ -72,51 +71,57 @@ const Diary = () => {
     </PaginationItem>
   ));
 
-  return ( isAuthenticated &&
-    <>
-      <div>
-        <Button
-          type="button"
-          color="primary"
-          className="float-end"
-          onClick={() => {
-            window.location.href = "/diary/new";
-          }}
-        >
-          <i className="fa-solid fa-plus"></i>
-        </Button>
-        <h1>All Entries</h1>
-      </div>
-      {diary != null ? diaryIndex : <h3>Loading...</h3>}
-      <Pagination className="mt-3">
-        <PaginationItem>
-          <PaginationLink first onClick={() => setStartPagination(0)} />
-        </PaginationItem>
-        <PaginationItem disabled={startPagination == 0}>
-          <PaginationLink
-            previous
-            onClick={() =>
-              setStartPagination((startPagination) => startPagination - 1)
-            }
-          />
-        </PaginationItem>
-        {paginationItems}
-        <PaginationItem disabled={startPagination == countPagination - 1}>
-          <PaginationLink
-            next
-            onClick={() =>
-              setStartPagination((startPagination) => startPagination + 1)
-            }
-          />
-        </PaginationItem>
-        <PaginationItem>
-          <PaginationLink
-            last
-            onClick={() => setStartPagination(countPagination - 1)}
-          />
-        </PaginationItem>
-      </Pagination>
-    </>
+  const pagination = (
+    <Pagination className="mt-3">
+      <PaginationItem>
+        <PaginationLink first onClick={() => setStartPagination(0)} />
+      </PaginationItem>
+      <PaginationItem disabled={startPagination == 0}>
+        <PaginationLink
+          previous
+          onClick={() =>
+            setStartPagination((startPagination) => startPagination - 1)
+          }
+        />
+      </PaginationItem>
+      {paginationItems}
+      <PaginationItem disabled={startPagination == countPagination - 1}>
+        <PaginationLink
+          next
+          onClick={() =>
+            setStartPagination((startPagination) => startPagination + 1)
+          }
+        />
+      </PaginationItem>
+      <PaginationItem>
+        <PaginationLink
+          last
+          onClick={() => setStartPagination(countPagination - 1)}
+        />
+      </PaginationItem>
+    </Pagination>
+  );
+
+  return (
+    isAuthenticated && (
+      <>
+        <div>
+          <Button
+            type="button"
+            color="primary"
+            className="float-end"
+            onClick={() => {
+              window.location.href = "/diary/new";
+            }}
+          >
+            <i className="fa-solid fa-plus"></i>
+          </Button>
+          <h1>All Entries</h1>
+        </div>
+        {diary != null ? diaryIndex : <h3>Loading...</h3>}
+        {pagination}
+      </>
+    )
   );
 };
 
